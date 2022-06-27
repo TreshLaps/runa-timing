@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +42,17 @@ public class Startup
         services.AddControllersWithViews();
         services.AddHttpClient();
         services.AddMemoryCache();
-        services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")));
+
+        if (Configuration.GetConnectionString("DataContext").Contains("Host="))
+        {
+            // Postgress
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DataContext")));
+        }
+        else
+        {
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")));
+        }
 
         // In production, the React files will be served from this directory
         services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
