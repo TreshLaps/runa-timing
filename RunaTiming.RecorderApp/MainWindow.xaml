@@ -1,0 +1,24 @@
+﻿<Window x:Class="RunaTiming.RecorderApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RunaTiming.RecorderApp"
+        mc:Ignorable="d"
+        Title="Runa Timing" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Label Content="Race Id" Margin="10,0,0,0" />
+            <TextBox x:Name="RaceIdTextBox" Width="50px" VerticalAlignment="Center" Padding="5" />
+            <Label Content="Race Name" Margin="10,0,0,0" />
+            <TextBox x:Name="RaceNameTextBox" Width="100px" VerticalAlignment="Center" Padding="5" />
+            <Button x:Name="StartCaptureButton" Content="Start" Click="StartCaptureButton_Click" Margin="10,0,0,0" Padding="20,5" />
+        </StackPanel>
+        <TextBox x:Name="StatusTextBox" AcceptsReturn="True" Grid.Row="2" IsReadOnly="True" VerticalScrollBarVisibility="Visible" />
+    </Grid>
+</Window>
