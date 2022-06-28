@@ -10,10 +10,12 @@ public class CsvTimingFile
     public string LastName { get; set; }
     public string FirstName { get; set; }
 
-    [Format("yyyy.MM.dd")] public DateTime BirthDate { get; set; }
+    [Format("yyyy.MM.dd", "dd.MM.yyyy")] public DateTime BirthDate { get; set; }
     public string RaceName { get; set; }
 
-    [Format("yyyy.MM.dd HH:mm:ss.fff")] public DateTime? StartTime { get; set; }
+    [Format("yyyy.MM.dd HH:mm:ss.fff", "dd.MM.yyyy HH:mm:ss.fff")]
+    public DateTime? StartTime { get; set; }
+
     public DateTime? ChipStartTime { get; set; }
     public string FinishingTime { get; set; }
     public string Splits { get; set; }

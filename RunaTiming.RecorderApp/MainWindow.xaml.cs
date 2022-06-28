@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.IO;
@@ -92,16 +93,25 @@ namespace RunaTiming.RecorderApp
                     }
 
                     checkedFiles.Add(csvFile);
-                    var fileContent = CsvTimingHelper.ParseFile(csvFile);
-                    WriteStatus($"Checking file: {Path.GetFileName(csvFile)}");
 
-                    foreach (var item in fileContent)
+                    try
                     {
-                        if (!newestRecords.ContainsKey(item.Bib) || item.IsNewerThan(newestRecords[item.Bib]))
+                        var fileContent = CsvTimingHelper.ParseFile(csvFile);
+
+                        WriteStatus($"Checking file: {Path.GetFileName(csvFile)}");
+
+                        foreach (var item in fileContent)
                         {
-                            newestRecords[item.Bib] = item;
-                            recordsToUpload[item.Bib] = item;
+                            if (!newestRecords.ContainsKey(item.Bib) || item.IsNewerThan(newestRecords[item.Bib]))
+                            {
+                                newestRecords[item.Bib] = item;
+                                recordsToUpload[item.Bib] = item;
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteException(ex);
                     }
                 }
 
@@ -119,12 +129,20 @@ namespace RunaTiming.RecorderApp
         private async Task UploadResults(IEnumerable<CsvTimingFile> values)
         {
             WriteStatus("Uploading results");
+            var uploadStatus = false;
 
-            var valuesToUpload = values
-                .Select(CsvTimingHelper.ConvertToResultItem)
-                .ToList();
+            try
+            {
+                var valuesToUpload = values
+                    .Select(CsvTimingHelper.ConvertToResultItem)
+                    .ToList();
 
-            var uploadStatus = await UploadService.UploadResults(_serviceUrl, valuesToUpload);
+                uploadStatus = await UploadService.UploadResults(_serviceUrl, valuesToUpload);
+            }
+            catch (Exception ex)
+            {
+                WriteException(ex);
+            }
 
             if (uploadStatus == false)
             {
@@ -143,6 +161,14 @@ namespace RunaTiming.RecorderApp
         {
             Application.Current.Dispatcher.BeginInvoke(
                 () => { StatusTextBox.Text += $"{text}\r\n"; });
+        }
+
+        private void WriteException(Exception exception)
+        {
+            WriteStatus("---");
+            WriteStatus($"ERROR: {exception.Message}");
+            WriteStatus(exception.ToString());
+            WriteStatus("---");
         }
     }
 }
