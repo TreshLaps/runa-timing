@@ -25,7 +25,7 @@ public class RaceController : Controller
     }
 
     [HttpGet("{raceId}/results")]
-    public List<Result> List(int raceId)
+    public List<RaceResult> List(int raceId)
     {
         return _raceResultService.ListResults(raceId);
     }
