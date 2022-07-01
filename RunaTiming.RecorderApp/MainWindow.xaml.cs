@@ -138,6 +138,12 @@ namespace RunaTiming.RecorderApp
                     .ToList();
 
                 uploadStatus = await UploadService.UploadResults(_serviceUrl, valuesToUpload);
+
+                foreach (var item in valuesToUpload)
+                {
+                    WriteStatus(
+                        $"#{item.Bib} {item.FirstName} {item.LastName} -  {item.StartTime} | {item.ChipStartTime} | {string.Join(", ", item.Splits)} | {item.FinishingTime}");
+                }
             }
             catch (Exception ex)
             {
@@ -147,11 +153,6 @@ namespace RunaTiming.RecorderApp
             if (uploadStatus == false)
             {
                 WriteStatus("ERROR: Failed to upload results");
-            }
-
-            foreach (var item in values)
-            {
-                WriteStatus($"#{item.Bib} {item.FirstName} {item.LastName} - {item.Splits}");
             }
 
             WriteStatus("---");
