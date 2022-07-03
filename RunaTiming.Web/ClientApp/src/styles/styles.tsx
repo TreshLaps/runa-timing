@@ -101,9 +101,13 @@ export const Table = styled.table`
   box-shadow: rgb(0 0 0 / 13%) 0px 1.6px 3.6px 0px, rgb(0 0 0 / 11%) 0px 0.3px 0.9px 0px;
   overflow: hidden;
 
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
+
   > thead > tr > th {
-    text-align: right;
-    padding: 13px 15px 10px;
+    text-align: left;
+    padding: 13px 10px 10px;
     font-size: 15px;
     line-height: 1;
     background: lightblue;
@@ -114,6 +118,7 @@ export const Table = styled.table`
     }
 
     &:last-child {
+      text-align: right;
       padding-right: 20px;
     }
 
@@ -156,7 +161,7 @@ export const Table = styled.table`
     > td {
       white-space: pre-wrap;
       max-width: 300px;
-      text-align: right;
+      text-align: left;
       padding: 10px;
 
       &:first-child {
@@ -165,6 +170,7 @@ export const Table = styled.table`
       }
 
       &:last-child {
+        text-align: right;
         padding-right: 20px;
       }
 

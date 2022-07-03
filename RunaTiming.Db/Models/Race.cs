@@ -11,6 +11,7 @@ public class Race
     public DateTime Date { get; set; }
     public bool IsOngoing { get; set; }
     public bool IsHidden { get; set; }
+    public ClassType ClassType { get; set; }
 
     public double Distance { get; set; }
     public List<RaceSplit> Splits { get; set; } = new();
@@ -18,6 +19,12 @@ public class Race
     public ICollection<Participant> Participants { get; set; } = new List<Participant>();
 
     public ICollection<Result> Results { get; set; } = new List<Result>();
+}
+
+public enum ClassType
+{
+    None = 0,
+    Kondis2022 = 1
 }
 
 public class RaceSplit

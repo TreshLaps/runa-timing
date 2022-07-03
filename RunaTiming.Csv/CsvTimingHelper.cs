@@ -29,6 +29,7 @@ namespace RunaTiming.Csv
                 RaceName = csvFile.RaceName,
                 FirstName = csvFile.FirstName,
                 LastName = csvFile.LastName,
+                Sex = Enum.Parse<Db.Models.Sex>(csvFile.Sex.ToString()),
                 BirthDate = csvFile.BirthDate,
                 StartTime = csvFile.StartTime,
                 //ChipStartTime = csvFile.ChipStartTime,

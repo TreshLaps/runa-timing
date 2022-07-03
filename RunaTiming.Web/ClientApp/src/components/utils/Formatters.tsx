@@ -98,3 +98,19 @@ export function AveragePace<T>(
 
   return total / totalDuration;
 }
+
+export enum Sex {
+  Male = 0,
+  Female = 1,
+}
+
+export const getSexString = (sex: Sex) => {
+  if (sex === Sex.Male) {
+    return 'Mann';
+  }
+  if (sex === Sex.Female) {
+    return 'Kvinne';
+  }
+
+  return '';
+};

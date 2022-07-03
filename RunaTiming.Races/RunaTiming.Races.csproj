@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RunaTiming.Db\RunaTiming.Db.csproj" />
+    <ProjectReference Include="..\RunaTiming.Shared\RunaTiming.Shared.csproj" />
   </ItemGroup>
 
 </Project>
