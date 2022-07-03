@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { NoWrapTd, Table, TableContainer } from '../../styles/styles';
 import {
-  getDateString, getKmString, getPaceString, getTimeString,
+  getPaceString, getTimeString, getSexString, Sex,
 } from '../utils/Formatters';
 import Loader, { LoadingStatus } from '../utils/Loader';
 
@@ -18,6 +18,8 @@ interface RaceResult {
   bib: number;
   firstName: string;
   lastName: string;
+  sex: Sex;
+  class: string;
   finish?: RaceTime | null;
 }
 
@@ -55,12 +57,16 @@ const RacePage: React.FC = () => {
           <Table>
             <thead>
               <tr>
-                <th>Plass</th>
+                <th style={{ whiteSpace: 'nowrap', width: '10px' }}>Plass</th>
+                <th style={{ whiteSpace: 'nowrap', width: '10px' }}>Kjønn</th>
+                <th style={{ whiteSpace: 'nowrap', width: '10px' }}>Klasse</th>
                 <th>Startnr</th>
                 <th>Navn</th>
+                <th>Klubb</th>
+                <th>Kjønn</th>
+                <th>Klasse</th>
                 <th>Tid</th>
                 <th>Etter</th>
-                <th>min/km</th>
               </tr>
             </thead>
             <tbody>
@@ -71,17 +77,29 @@ const RacePage: React.FC = () => {
 
                 return (
                   <tr key={raceResult.bib}>
-                    <NoWrapTd>{raceResult.finish?.positionOverall}</NoWrapTd>
+                    <NoWrapTd style={{ fontWeight: 500 }}>{raceResult.finish?.positionOverall}</NoWrapTd>
+                    <NoWrapTd>{raceResult.finish?.positionSex}</NoWrapTd>
+                    <NoWrapTd>{raceResult.finish?.positionClass}</NoWrapTd>
                     <NoWrapTd>{raceResult.bib}</NoWrapTd>
                     <NoWrapTd>{raceResult.firstName} <span style={{ textTransform: 'uppercase' }}>{raceResult.lastName}</span></NoWrapTd>
+                    <NoWrapTd>-</NoWrapTd>
+                    <NoWrapTd>{getSexString(raceResult.sex)}</NoWrapTd>
+                    <NoWrapTd>{raceResult.class}</NoWrapTd>
                     {
-                    raceResult.finish && (
+                    raceResult.finish != null && (
                       <>
                         <NoWrapTd>{getTimeString(raceResult.finish.durationInSeconds)}</NoWrapTd>
                         <NoWrapTd>+{getTimeString(raceResult.finish.durationInSeconds - fastestDuration)}</NoWrapTd>
-                        <NoWrapTd>{getPaceString(raceResult.finish.distanceInMeters / raceResult.finish.durationInSeconds)}</NoWrapTd>
                       </>
                     )
+                  }
+                    {
+                      raceResult.finish == null && (
+                      <>
+                        <NoWrapTd>&nbsp;</NoWrapTd>
+                        <NoWrapTd>&nbsp;</NoWrapTd>
+                      </>
+                      )
                   }
                   </tr>
                 );

@@ -60,6 +60,7 @@ namespace RunaTiming.Web.Pages
                     dbResult.Modified = System.DateTime.UtcNow;
                     dbResult.FirstName = resultItem.FirstName;
                     dbResult.LastName = resultItem.LastName;
+                    dbResult.Sex = resultItem.Sex;
                     dbResult.BirthDate = resultItem.BirthDate;
                     dbResult.StartTime = resultItem.StartTime;
                     dbResult.ChipStartTime = resultItem.ChipStartTime;

@@ -1,4 +1,6 @@
 ﻿using RunaTiming.Db;
+using RunaTiming.Db.Models;
+using RunaTiming.Shared.ClassConverters;
 
 namespace RunaTiming.Races;
 
@@ -30,6 +32,8 @@ public class RaceResultService
                     Modified = dbResult.Modified,
                     FirstName = dbResult.FirstName,
                     LastName = dbResult.LastName,
+                    Sex = dbResult.Sex.ToString(),
+                    Class = GetClass(race.ClassType, dbResult.Sex, dbResult.BirthDate),
                     BirthDate = dbResult.BirthDate,
                     StartTime = dbResult.StartTime,
                     Finish = dbResult.FinishingTime.HasValue
@@ -48,10 +52,45 @@ public class RaceResultService
             r => r.Finish.DurationInSeconds,
             (r, position) => { r.Finish.PositionOverall = position; });
 
+        CalculatePosition(
+            results,
+            r => r.Finish != null && r.Sex == Sex.Male,
+            r => r.Finish.DurationInSeconds,
+            (r, position) => { r.Finish.PositionSex = position; });
+
+        CalculatePosition(
+            results,
+            r => r.Finish != null && r.Sex == Sex.Female,
+            r => r.Finish.DurationInSeconds,
+            (r, position) => { r.Finish.PositionSex = position; });
+
+        var athleteClasses = results
+            .Select(r => r.Class)
+            .ToHashSet();
+
+        foreach (var athleteClass in athleteClasses)
+        {
+            CalculatePosition(
+                results,
+                r => r.Finish != null && r.Class == athleteClass,
+                r => r.Finish.DurationInSeconds,
+                (r, position) => { r.Finish.PositionClass = position; });
+        }
+
         return results
-            .OrderBy(r => r.Finish != null)
+            .OrderByDescending(r => r.Finish != null)
             .ThenBy(r => r.Finish?.PositionOverall)
             .ToList();
+    }
+
+    private string GetClass(ClassType classType, Sex athleteSex, DateTime? athleteBirthDate)
+    {
+        if (classType == ClassType.Kondis2022 && athleteBirthDate.HasValue)
+        {
+            return Kondis2022ClassConverter.Convert(athleteSex == Sex.Male, athleteBirthDate.Value);
+        }
+
+        return string.Empty;
     }
 
     private void CalculatePosition(
@@ -80,7 +119,9 @@ public class RaceResult
 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public string Sex { get; set; }
     public DateTime? BirthDate { get; set; }
+    public string Class { get; set; }
 
     public DateTime? StartTime { get; set; }
     public double? ChipStartTime { get; set; }

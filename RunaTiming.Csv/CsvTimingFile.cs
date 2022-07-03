@@ -10,6 +10,8 @@ public class CsvTimingFile
     public string LastName { get; set; }
     public string FirstName { get; set; }
 
+    public Sex Sex { get; set; }
+
     [Format("yyyy.MM.dd", "dd.MM.yyyy")] public DateTime BirthDate { get; set; }
     public string RaceName { get; set; }
 
@@ -25,6 +27,12 @@ public class CsvTimingFile
         return $"{StartTime}_{ChipStartTime}_{FinishingTime}_{Splits}".Length >=
                $"{otherItem.StartTime}_{otherItem.ChipStartTime}_{otherItem.FinishingTime}_{otherItem.Splits}".Length;
     }
+}
+
+public enum Sex
+{
+    [Name("Male")] Male = 0,
+    [Name("Female")] Female = 1
 }
 
 public sealed class CsvTimingFileMap : ClassMap<CsvTimingFile>

@@ -142,7 +142,7 @@ namespace RunaTiming.RecorderApp
                 foreach (var item in valuesToUpload)
                 {
                     WriteStatus(
-                        $"#{item.Bib} {item.FirstName} {item.LastName} -  {item.StartTime} | {item.ChipStartTime} | {string.Join(", ", item.Splits)} | {item.FinishingTime}");
+                        $"#{item.Bib} {item.FirstName} {item.LastName} {item.Sex} -  {item.StartTime} | {item.ChipStartTime} | {string.Join(", ", item.Splits)} | {item.FinishingTime}");
                 }
             }
             catch (Exception ex)

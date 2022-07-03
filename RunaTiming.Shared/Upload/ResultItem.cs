@@ -1,4 +1,6 @@
-﻿namespace RunaTiming.Shared.Upload;
+﻿using RunaTiming.Db.Models;
+
+namespace RunaTiming.Shared.Upload;
 
 public class ResultItem
 {
@@ -7,6 +9,7 @@ public class ResultItem
 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public Sex Sex { get; set; }
     public DateTime? BirthDate { get; set; }
 
     public DateTime? StartTime { get; set; }
